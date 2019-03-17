@@ -1,0 +1,17 @@
+Package: incAnalysis
+Title: Comparative analysis of model performance for rate data
+Version: 0.0.0.9000
+Authors@R: person("Maximilian", "Knoll", email = "m.knoll@dkfz.de", role = c("aut", "cre"))
+Description: Easy evaluation of predictive performance for different rate prediction models (forward projection of last observations, Generalized Linear Models (INLA framework), Generalized Additive Models (mgcv) and Bayesian Age-Period-Cohort Models. Bias, Coverage and Precision are calculated. 
+Depends: R (>= 3.4.1)
+License: GPL-3 
+Imports:
+    INLA,
+    mgcv,
+    splines
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

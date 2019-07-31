@@ -1,13 +1,13 @@
-#' @title Run GLM analysis 
+#' @title Run GLM analysis on incClass instance.
 #'
-#' @description Wrapper for runINLA
+#' @description Wrapper for runINLA() or runMlGLM()
 #' 
 #' @param method inla if INLA should be used, any other value 
 #' for the classical approach
 #' @param ... additional parameters
 #'
 #' @export
-#' @return Updates incAnalysis object
+#' @return Updated incAnalysis object
 runGLM <- function(method="inla", ...) {
     if (method=="inla") {
 	runInla(class="GLM_INLA", ...)
@@ -19,13 +19,14 @@ runGLM <- function(method="inla", ...) {
 
 #' @title INLA based GLM calculation
 #' 
-#' @description Wrapper for inlaCalc
+#' @description Wrapper for inlaCalc() or mlCalc(),
 #'
+#' @param method inla for INLA or any other for classical approaches
 #' @param ... additional parameters
 #' 
 #' @export
 #' @return list with results
-glmCalc <- function(...) { 
+glmCalc <- function(method="inla", ...) { 
     if (method == "inla") {
 	inlaCalc(class="GLM_INLA", ...)
     } else {
@@ -46,6 +47,7 @@ glmCalc <- function(...) {
 #' @param type type parameter of the predict function
 #'
 #' @import MASS
+#' @import stats
 #'
 #' @export
 #'

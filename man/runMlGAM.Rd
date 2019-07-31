@@ -2,7 +2,7 @@
 % Please edit documentation in R/gamCalc.R
 \name{runMlGAM}
 \alias{runMlGAM}
-\title{Run GAM analysis}
+\title{Run ML GAM analysis}
 \usage{
 runMlGAM(obj, frm = as.formula(Y ~ offset(log(N))), family = "poisson",
   text = "")
@@ -12,13 +12,13 @@ runMlGAM(obj, frm = as.formula(Y ~ offset(log(N))), family = "poisson",
 
 \item{frm}{model formula}
 
-\item{family}{exponential family to use (e.g. poisson)}
+\item{family}{distribution}
 
 \item{text}{freely usable text variable}
 }
 \value{
-Update incAnalysis object.
+Updated incClass object.
 }
 \description{
-Models data using GAMs.
+Models data using GAMs, ML approach.
 }

@@ -31,8 +31,8 @@ GAM is called from runGAM. Defaults to INLA.}
 \item{...}{additional parameters}
 }
 \value{
-Updated incAnalysis object
+Updated incClass instance
 }
 \description{
-Add INLA based model analysis to an incAnalysis object
+Add INLA based model analysis to an incClass object
 }

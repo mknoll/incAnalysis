@@ -2,16 +2,16 @@
 % Please edit documentation in R/forwProjCalc.R
 \name{forwProj}
 \alias{forwProj}
-\title{Perform forward projection}
+\title{Perform forward projection on incClass instance.}
 \usage{
 forwProj(cases, n, method, text, constRates, population,
   roundFun = identity)
 }
 \arguments{
 \item{cases}{case counts (e.g. incidence) as stored in the 
-casesWidePred slot of an incAnalysis object (period: rows; age: columns)}
+casesWidePred slot of an incClass object (period: rows; age: columns)}
 
-\item{n}{Row index of cases to fill prediction years with}
+\item{n}{row index of cases to fill prediction years with}
 
 \item{method}{which method to use, parameters used for DescTools::BinomCI,
 defaults to "jeffreys": "wald", "wilson", "agresti-coull", "jeffreys", 
@@ -30,5 +30,6 @@ same structure as for cases}
 floor, ceiling)}
 }
 \description{
-Forward projection of last observations
+Forward projection of last observations or 
+last rate (constant rate).
 }

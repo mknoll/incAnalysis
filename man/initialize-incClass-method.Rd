@@ -5,7 +5,7 @@
 \alias{initialize,incClass-method}
 \title{Constructor incClass}
 \usage{
-\S4method{initialize}{incClass}(.Object, dateCreated = POSIXct,
+\S4method{initialize}{incClass}(.Object, dateCreated = base::POSIXct,
   population = data.frame, cases = data.frame, nPred = numeric,
   nFit = numeric, predLast = numeric, gridFactor = numeric,
   entity = character, ...)

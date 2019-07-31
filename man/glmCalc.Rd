@@ -4,14 +4,16 @@
 \alias{glmCalc}
 \title{INLA based GLM calculation}
 \usage{
-glmCalc(...)
+glmCalc(method = "inla", ...)
 }
 \arguments{
+\item{method}{inla for INLA or any other for classical approaches}
+
 \item{...}{additional parameters}
 }
 \value{
 list with results
 }
 \description{
-Wrapper for inlaCalc
+Wrapper for inlaCalc() or mlCalc(),
 }

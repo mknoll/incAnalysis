@@ -1,11 +1,13 @@
-#' @title BAPC calc
+#' @title Use BAPC as projection model
 #' 
-#' @description perform a standard BAPC analysis 
+#' @description Use the BAPC model published by Riebler et al. (2017)
 #' 
-#' @param gf grid factor: age groups are m times wider than the period interval
-#' @param cases Incidence counts
-#' @param population Population data
-#' @param predict precict parameter of BAPC
+#' @param gf grid factor: age groups are m times wider than the period interval,
+#' typically 5 for yearly observation data and 18 age groups
+#' @param cases data.frame with incidence counts: ages in columns, increasing from left 
+#' to right, ordered years in rows, last row: most recent observation. 
+#' @param population Population data: same format as cases.
+#' @param predict list of prediction parameters for BAPC
 #' @param text Free text 
 #' 
 #' @import BAPC

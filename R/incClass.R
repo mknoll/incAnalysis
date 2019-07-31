@@ -56,7 +56,7 @@ incClass <- setClass("incClass",
 #' @param ... additional parameters
 setMethod("initialize", "incClass",
 	  function(.Object,
-		   dateCreated=POSIXct,
+		   dateCreated=base::POSIXct,
 		   population=data.frame,
 		   cases=data.frame,
 		   nPred=numeric,

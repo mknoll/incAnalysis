@@ -1,6 +1,6 @@
-#' @title INLA based GLM fitting
+#' @title INLA based model fitting
 #' 
-#' @description Fits GLMs using the INLA framework
+#' @description Fits models using the INLA framework
 #'
 #' @param data data in long format as stored in the dataLongPred 
 #' slot of an incAnalysis object
@@ -15,6 +15,7 @@
 #' @param ... additional parameters
 #'
 #' @import INLA
+#' @import stats
 #' @export
 #'
 #' @return list with results
@@ -38,7 +39,7 @@ inlaCalc <- function(data,
 
 #' @title Run INLA analysis
 #'
-#' @description Add INLA based model analysis to an incAnalysis object 
+#' @description Add INLA based model analysis to an incClass object 
 #'
 #' @param obj incClass instance
 #' @param frm Model formula.
@@ -53,7 +54,7 @@ inlaCalc <- function(data,
 #' @param ... additional parameters
 #'
 #' @export
-#' @return Updated incAnalysis object
+#' @return Updated incClass instance
 runInla <- function(obj,
 		     frm=as.formula(Y~offset(log(N))), 
 		     family="poisson", 

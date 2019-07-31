@@ -2,13 +2,17 @@
 % Please edit documentation in R/gamCalc.R
 \name{gamCalc}
 \alias{gamCalc}
-\title{Run GAM analysis}
+\title{Perform GAM analysis}
 \usage{
-gamCalc(...)
+gamCalc(method = "inla", ...)
 }
 \arguments{
+\item{method}{use INLA when set to "inla", classical
+approach otherwise}
+
 \item{...}{additional parameters}
 }
 \description{
-Models data using GAMs.
+Models data using GAMs,
+independent of an incClass instancd
 }

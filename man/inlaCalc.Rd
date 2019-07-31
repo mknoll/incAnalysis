@@ -2,7 +2,7 @@
 % Please edit documentation in R/inlaCalc.R
 \name{inlaCalc}
 \alias{inlaCalc}
-\title{INLA based GLM fitting}
+\title{INLA based model fitting}
 \usage{
 inlaCalc(data, frm = as.formula(Y ~ offset(log(N))),
   family = "poisson", control.family = list(link = "log"),
@@ -35,5 +35,5 @@ GAM for runGAM()}
 list with results
 }
 \description{
-Fits GLMs using the INLA framework
+Fits models using the INLA framework
 }

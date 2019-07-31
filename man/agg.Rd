@@ -7,8 +7,8 @@
 agg(population, inc)
 }
 \arguments{
-\item{population}{population matrix, with consecutive 
-single years as columns}
+\item{population}{population matrix, with ordered
+single years as columns (increasing from left to right)}
 
 \item{inc}{incidence matrix, single years in columns}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluate.R
 \name{evaluate}
 \alias{evaluate}
-\title{Evaluate different analyses}
+\title{Evaluate model projections.}
 \usage{
 evaluate(obj, dir = NULL, fnPre = "")
 }
@@ -18,6 +18,6 @@ updated incAnalysis object
 }
 \description{
 Extracts and calculates precision data 
-and evaluation of coverage (within / outside credibility 
-or confidence bands). 95% bands are used.
+and evaluates bias and coverage (within / outside credibility 
+or confidence bands). Two-sided 95% bands/intervals are used.
 }

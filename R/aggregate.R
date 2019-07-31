@@ -2,8 +2,8 @@
 #' 
 #' @description Aggregates yearly to 5yr age data (sum)
 #' 
-#' @param population population matrix, with consecutive 
-#' single years as columns
+#' @param population population matrix, with ordered  
+#' single years as columns (increasing from left to right)
 #' @param inc incidence matrix, single years in columns
 #' 
 #' @export

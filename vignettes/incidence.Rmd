@@ -82,7 +82,7 @@ ageLow <- 20 # exclude data for ages below 20
 
 Population data is named after an equal scheme, thus loading different datasets works by adjusting the dataset variable.
 
-```{r, fig.width=7, fig.height=5}
+```{r, fig.width=8, fig.height=5}
 #filename 
 fn <- paste("population_", dataset, "_", gender, ".csv", sep="")
 population <- read.csv(
@@ -164,7 +164,7 @@ colnames(incidence) <- colnames(population)
 ```
 
 ## Visualize incidence and correct NAs
-```{r, fig.width=7, fig.height=5}
+```{r, fig.width=8, fig.height=5}
 # NA correspond to 0 values
 incidence[which(is.na(incidence))] <- 0
 incidence <- data.frame(incidence, check.names=F)
@@ -276,8 +276,8 @@ df[1:4,]
 ```{r, fig.width=7, fig.height=5}
 require(ggplot2)
 ##retain only future prediction
-df$PERIOD <-as.numeric(as.character(df$PERIOD))
-df <- df[which(df$PERIOD > max(df$PERIOD)-obj@nPred),]
+df$PERIOD_F <-as.numeric(as.character(df$PERIOD))
+df <- df[which(df$PERIOD_F > max(df$PERIOD_F)-obj@nPred),]
 
 # Coverage  
 ggplot(df, aes(x=PERIOD, y=CVG*100, group=paste(TYPE, TEXT), color=paste(TYPE, TEXT))) + geom_line() + geom_point()+ labs(color="model", y="coverage [%]") + ggpubr::rotate_x_text() + scale_color_brewer(palette="Set1")

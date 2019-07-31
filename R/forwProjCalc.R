@@ -1,10 +1,11 @@
-#' @title Perform forward projection
+#' @title Perform forward projection on incClass instance.
 #' 
-#' @description Forward projection of last observations
+#' @description Forward projection of last observations or 
+#' last rate (constant rate). 
 #' 
 #' @param cases case counts (e.g. incidence) as stored in the 
-#' casesWidePred slot of an incAnalysis object (period: rows; age: columns)
-#' @param n Row index of cases to fill prediction years with
+#' casesWidePred slot of an incClass object (period: rows; age: columns)
+#' @param n row index of cases to fill prediction years with
 #' @param method which method to use, parameters used for DescTools::BinomCI,
 #' defaults to "jeffreys": "wald", "wilson", "agresti-coull", "jeffreys", 
 #' "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", 

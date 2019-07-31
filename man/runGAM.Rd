@@ -13,7 +13,8 @@ any other value for classical approaches}
 \item{...}{additional parameters}
 }
 \description{
-Run GAM analysis on incClass instance
+Run GAM analysis on incClass instance,
+wrapper for runInla() or runMlGAM()
 
 Models data using GAMs.
 }

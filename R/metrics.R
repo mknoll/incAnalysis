@@ -1,7 +1,9 @@
-#' @title Calculates metrics for incAnalysis objects
+#' @title Calculates metrics for incClass instances.
 #' 
 #' @description Calculates and aggregates bias, coverage
-#' and precision
+#' and precision. 
+#' Negative bias hints towards overestimation of the 
+#' projection approach (nPred > nObs).
 #' 
 #' @param obj incClass instance
 #' 
@@ -10,7 +12,6 @@
 #'
 #' @return data.frame containing metrics
 metrics <- function(obj) {
-
     if (is.null(obj) || !.hasSlot(obj, "evalLong")) {
 	warning("No data available!")
 	return(NULL)

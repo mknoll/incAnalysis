@@ -1,8 +1,8 @@
-#' @title Evaluate different analyses
+#' @title Evaluate model projections.
 #' 
 #' @description Extracts and calculates precision data 
-#' and evaluation of coverage (within / outside credibility 
-#' or confidence bands). 95% bands are used.
+#' and evaluates bias and coverage (within / outside credibility 
+#' or confidence bands). Two-sided 95% bands/intervals are used. 
 #' 
 #' @param obj incAnalysis object
 #' @param dir directory to create plots in

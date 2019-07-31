@@ -2,7 +2,7 @@
 % Please edit documentation in R/glmCalc.R
 \name{runGLM}
 \alias{runGLM}
-\title{Run GLM analysis}
+\title{Run GLM analysis on incClass instance.}
 \usage{
 runGLM(method = "inla", ...)
 }
@@ -13,8 +13,8 @@ for the classical approach}
 \item{...}{additional parameters}
 }
 \value{
-Updates incAnalysis object
+Updated incAnalysis object
 }
 \description{
-Wrapper for runINLA
+Wrapper for runINLA() or runMlGLM()
 }

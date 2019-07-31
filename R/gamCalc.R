@@ -1,15 +1,16 @@
-#' @title GAM based predictions
+#' @title GAM: classical approach for projections.
 #' 
-#' @description Use GAMs (mgcv) package for predictions.
+#' @description Use mgcv::gam() models for projections.
 #' 
-#' @param data data used for model fitting, in o form as stored in 
-#' the dataLongPred slot of an incAnalysis object
-#' @param frm Formula used for mgcv::gam
-#' @param family distribution
-#' @param type type parameter used for the predict function
+#' @param data data used for model fitting, in the form as stored in 
+#' the dataLongPred slot of an incClass object
+#' @param frm formula used for mgcv::gam()
+#' @param family distribution, family parameter
+#' @param type type parameter used in the predict function
 #' @param text free-text variable
 #' 
 #' @import mgcv
+#' @import stats
 #' @export
 gamMlCalc <- function(data, 
 		    frm=as.formula(Y~offset(log(N))),
@@ -25,17 +26,17 @@ gamMlCalc <- function(data,
     return(list(result=res, type="GAM_ML", text=text, fit=fit))
 }
 
-#' @title Run GAM analysis 
+#' @title Run ML GAM analysis 
 #'
-#' @description Models data using GAMs. 
+#' @description Models data using GAMs, ML approach. 
 #' 
 #' @param obj incClass object
 #' @param frm model formula
-#' @param family exponential family to use (e.g. poisson)
+#' @param family distribution 
 #' @param text freely usable text variable
 #' 
 #' @export
-#' @return Update incAnalysis object.
+#' @return Updated incClass object.
 runMlGAM <- function(obj,
 		   frm=as.formula(Y~offset(log(N))),
 		   family="poisson",
@@ -52,7 +53,8 @@ runMlGAM <- function(obj,
 
 #' @title Run GAM analysis 
 #'
-#' @description Run GAM analysis on incClass instance
+#' @description Run GAM analysis on incClass instance,
+#' wrapper for runInla() or runMlGAM()
 #' 
 #' @param method Can be inla for INLA fitted models,
 #' any other value for classical approaches
@@ -69,14 +71,17 @@ runGAM <- function(method="inla", ...) {
 }
 
 
-#' @title Run GAM analysis 
+#' @title Perform GAM analysis
 #' 
-#' @description Models data using GAMs. 
+#' @description Models data using GAMs,
+#' independent of an incClass instancd
 #'
+#' @param method use INLA when set to "inla", classical
+#' approach otherwise
 #' @param ... additional parameters
 #'
 #' @export 
-gamCalc <- function(...) {
+gamCalc <- function(method="inla", ...) {
     if (method=="inla") {
 	inlaCalc(class="GAM_INLA", ...)
     } else {

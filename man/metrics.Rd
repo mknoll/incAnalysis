@@ -2,7 +2,7 @@
 % Please edit documentation in R/metrics.R
 \name{metrics}
 \alias{metrics}
-\title{Calculates metrics for incAnalysis objects}
+\title{Calculates metrics for incClass instances.}
 \usage{
 metrics(obj)
 }
@@ -14,5 +14,7 @@ data.frame containing metrics
 }
 \description{
 Calculates and aggregates bias, coverage
-and precision
+and precision. 
+Negative bias hints towards overestimation of the 
+projection approach (nPred > nObs).
 }

@@ -1,27 +1,25 @@
 Package: incAnalysis
-Title: Comparative analysis of model performances for rate data
+Title: Comparative Analysis of Model Performances for Rate Data
 Version: 0.9
-Author: Maximilian Knoll <m.knoll@dkfz.de>
-Maintainer: Maximilian Knoll <m.knoll@dkfz.de>
 Authors@R: person("Maximilian", "Knoll", email = "m.knoll@dkfz.de", role = c("aut", "cre"))
 Description: Easy evaluation of predictive performance for different rate prediction approaches as forward projection of last observations, Generalized Linear Models, Generalized Additive Models and a specific Bayesian Age-Period-Cohort Model. Both INLA and classical Maximum Likelihood approaches can be used for GLMs and GAMs.  
-Depends: R (>= 3.4.1)
+Depends: R (>= 3.4.0)
 License: GPL-3 
-Imports:
-    BAPC,
+Imports: BAPC,
     DescTools,
+    ggplot2,
+    ggpubr,
     INLA,
+    knitr,
     MASS,
     methods,
-    mgcv (>= 1.8.27),
-    splines
+    mgcv,
+    pheatmap,
+    rmarkdown,
+    splines,
+    splines2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Suggests: ggplot2,
-    ggpubr,
-    knitr,
-    pheatmap,
-    rmarkdown,
-    splines2
 VignetteBuilder: knitr
+Additional_repositories: https://inla.r-inla-download.org/R/stable, http://R-Forge.R-project.org

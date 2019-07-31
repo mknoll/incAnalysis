@@ -2,23 +2,23 @@
 % Please edit documentation in R/gamCalc.R
 \name{gamMlCalc}
 \alias{gamMlCalc}
-\title{GAM based predictions}
+\title{GAM: classical approach for projections.}
 \usage{
 gamMlCalc(data, frm = as.formula(Y ~ offset(log(N))), text = "",
   family = "poisson", type = "link")
 }
 \arguments{
-\item{data}{data used for model fitting, in o form as stored in 
-the dataLongPred slot of an incAnalysis object}
+\item{data}{data used for model fitting, in the form as stored in 
+the dataLongPred slot of an incClass object}
 
-\item{frm}{Formula used for mgcv::gam}
+\item{frm}{formula used for mgcv::gam()}
 
 \item{text}{free-text variable}
 
-\item{family}{distribution}
+\item{family}{distribution, family parameter}
 
-\item{type}{type parameter used for the predict function}
+\item{type}{type parameter used in the predict function}
 }
 \description{
-Use GAMs (mgcv) package for predictions.
+Use mgcv::gam() models for projections.
 }

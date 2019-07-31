@@ -11,6 +11,8 @@
   entity = character, ...)
 }
 \arguments{
+\item{.Object}{class instance}
+
 \item{dateCreated}{Date of creation}
 
 \item{population}{data.frame containing count data with years in
@@ -36,6 +38,8 @@ in yearly fashion and 1-year age groups, the grid factor is 1. For yearly data
 and 5-year age groups, the grid factor is 5.}
 
 \item{entity}{Free text variable.}
+
+\item{...}{additional parameters}
 }
 \description{
 Constructor for new analysis object

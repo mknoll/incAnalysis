@@ -4,16 +4,19 @@
 \alias{inlaCalc}
 \title{INLA based GLM fitting}
 \usage{
-inlaCalc(data, frm = as.formula(Y ~ offset(log(N))), family = "poisson",
-  control.family = list(link = "log"), control.predictor = list(link = 1,
-  compute = T), control.compute = list(dic = T, cpo = T, waic = T),
-  text = "")
+inlaCalc(data, frm = as.formula(Y ~ offset(log(N))),
+  family = "poisson", control.family = list(link = "log"),
+  control.predictor = list(link = 1, compute = T),
+  control.compute = list(dic = T, cpo = T, waic = T), text = "",
+  class = "INLA")
 }
 \arguments{
 \item{data}{data in long format as stored in the dataLongPred 
 slot of an incAnalysis object}
 
 \item{frm}{Model formula.}
+
+\item{family}{distribution}
 
 \item{control.family}{inla parameter}
 
@@ -22,6 +25,11 @@ slot of an incAnalysis object}
 \item{control.compute}{inla parameter}
 
 \item{text}{Free text variable}
+
+\item{class}{specify the type of caller, e.g. GLM für runGLM,
+GAM for runGAM()}
+
+\item{...}{additional parameters}
 }
 \value{
 list with results

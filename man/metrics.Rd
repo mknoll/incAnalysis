@@ -7,7 +7,7 @@
 metrics(obj)
 }
 \arguments{
-\item{obj}{incAnalysis object}
+\item{obj}{incClass instance}
 }
 \value{
 data.frame containing metrics

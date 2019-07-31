@@ -8,5 +8,16 @@ bapcCalc(population, cases, gf, predict = list(npredict = 10, retro = T),
   text = "")
 }
 \arguments{
+\item{population}{Population data}
+
+\item{cases}{Incidence counts}
+
 \item{gf}{grid factor: age groups are m times wider than the period interval}
+
+\item{predict}{precict parameter of BAPC}
+
+\item{text}{Free text}
+}
+\description{
+perform a standard BAPC analysis
 }

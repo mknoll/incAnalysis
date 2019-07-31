@@ -21,7 +21,7 @@ This vignette demonstrates the use of the incAnalysis package for the comparativ
 
 # Requirements and installation
 ## INLA 
-The package relies on the INLA framework for GLMs and BAPC models. It can be obtained from http://www.r-inla.org/download.
+The package relies on the INLA framework for BAPC models, and INLA might also be used for GLM and GAM fitting. It can be obtained from http://www.r-inla.org/download.
 
 ```{r, eval=F}
 install.packages("INLA", repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)
@@ -54,6 +54,7 @@ The following cancer registry incidence data, split by gender, are included in t
 - Saarland data (retrieved: October 2018)
 
 Entities:
+
 - Glioblastoma, Lung, Pancreas, Colorectal, Prostate, Breast, Kidney, Melanoma (SEER9)
 - All available entities for NORDCAN/Saarland data
 
@@ -81,10 +82,13 @@ ageLow <- 20 # exclude data for ages below 20
 
 Population data is named after an equal scheme, thus loading different datasets works by adjusting the dataset variable.
 
-```{r}
+```{r, fig.width=7, fig.height=5}
 #filename 
 fn <- paste("population_", dataset, "_", gender, ".csv", sep="")
-population <- read.csv(system.file("extdata", fn, package="incAnalysis"), check.names=F, row.names=1)
+population <- read.csv(
+		       system.file("extdata", fn, 
+				   package="incAnalysis"), 
+		       check.names=F, row.names=1)
 
 #multiply by factor 1000 to get actual counts (only SEER9 data!)
 if (dataset == "SEER9") {
@@ -126,7 +130,7 @@ fl[which(grepl("SEER9", fl))]
 
 ## Incidence data (NORDCAN)
 
-NORDCAN data was acquired via webscraping (all available entities).
+NORDCAN data was acquired via webscraping on 2018-08-01 (all available entities).
 ```{r, eval=F}
 dataset <- "NORDCAN"
 load(system.file("extdata", paste(dataset, "_incidence_", gender,sep=""), package="incAnalysis")) #coll
@@ -141,7 +145,7 @@ colnames(incidence) <- colnames(population)
 
 ## Incidence data (Saarland)
 
-Saarland data was acquired via webscraping (all available entities).
+Saarland data was acquired via webscraping on 2018-08-01 (all available entities).
 ```{r, eval=F}
 dataset <- "Saarland"
 load(system.file("extdata", paste(dataset, "_incidence_", gender,sep=""), package="incAnalysis")) #all
@@ -160,7 +164,7 @@ colnames(incidence) <- colnames(population)
 ```
 
 ## Visualize incidence and correct NAs
-```{r}
+```{r, fig.width=7, fig.height=5}
 # NA correspond to 0 values
 incidence[which(is.na(incidence))] <- 0
 incidence <- data.frame(incidence, check.names=F)
@@ -189,7 +193,7 @@ obj <- new("incClass",
 	   population=population,
 	   cases=incidence,
 	   nPred=10, #prediction period: 10 years
-	   nFit=5, #fitting period
+	   nFit=15, #fitting period
 	   predLast=0, #only retrieve data for last prediction year
 	   gridFactor=1, #width of age and year bins. 1 for SEER data, 5 for NORDCAN and Saarland
 	   entity=entity)
@@ -197,7 +201,7 @@ obj <- new("incClass",
 
 ## Forward Projection of Last observations
 ```{r}
-obj <- runFwProj(obj, ci="W") #Wilson, ci can be PC for Pearson Clopper
+obj <- runFwProj(obj, method="wilson") 
 ```
 
 ## GLMs
@@ -206,30 +210,44 @@ Fitted using INLA.
 # linear model with age and period effects
 frm <- as.formula(Y~offset(log(N))+ PERIOD + AGE)
 # use neg-binomial distribution
-obj <- runGLM(obj, frm=frm, family="nbinomial", text="arbitrary model ID 1")
+obj <- runGLM(obj, frm=frm, family="nbinomial", text="age,period", method="inla")
 ```
 
-## Splines with INLA
+## GAMs, unviariate smoother
 ```{r}
 ### RW2
-frm <- as.formula(Y~offset(log(N))+PERIOD+f(inla.group(AGE), model="rw2"))
-obj <- runGLM(obj, frm=frm, family="nbinomial", text="rw2")
+frm <- as.formula(Y~offset(log(N))+PERIOD+f(AGE, model="rw2"))
+obj <- runGLM(obj, frm=frm, family="nbinomial", text="rw2", method="inla")
 
-### Cubic spline
-ZSplineAge <- createZSpline(obj@dataLong$AGE, nKnots=10)
-frm <- as.formula(Y~offset(log(N))+PERIOD+AGE+f(SEQNO,model="z",Z=ZSplineAge))
-obj <- runGLM(obj, frm=frm, family="poisson", text="splineAge")
+### Bspline
+require(splines)
+frm <- as.formula(Y~offset(log(N))+PERIOD+bs(AGE))
+obj <- runGLM(obj, frm=frm, family="nbinomial", text="splineAge", method="inla")
 ```
 
 
-## GAMs
+## GAMs, multivariate smooths
 ```{r}
-# multivariate smooths (tensor spline)
+# classical approach (tensor spline)
 frm <- as.formula(Y~offset(log(N))+ te(PERIOD, AGE))
-# use Poisson distribution
-obj <- runGAM(obj, frm=frm, family="poisson", text="arbitrary model ID 2")
-```
+obj <- runGAM(obj, frm=frm, family="nb", text="te", method="ml")
 
+
+### INLA
+# marginal bases for age and period
+ag <- splines2::mSpline(obj@dataLongPred$AGE)
+yr <- splines2::mSpline(obj@dataLongPred$AGE)
+  
+# tensor product smooth model matrix
+Z <- mgcv::tensor.prod.model.matrix(list(ag, yr))
+  
+# model formula
+# SEQNO: unique id for each observation/prediction
+frm <- as.formula(Y~offset(log(N)) + AGE + PERIOD
+       + f(SEQNO, model="z", Z=Z,
+       prior="loggamma", param=c(1, 0.005)))
+obj <- runGAM(obj, frm=frm, family="nbinomial", text="multivarte smoother", method="inla")
+```
 
 ## BAPC
 ```{r}
@@ -245,59 +263,28 @@ pitHist(obj)
 ## Calcuate bias, precision, coverage
 ```{r}
 obj <- evaluate(obj)
+#to plot predictions, set predLast=1 when instantiating the object
 ```
 
 ## Extract metrics
 ```{r}
 df <- metrics(obj)
-df
+df[1:4,]
 ```
 
 ## Plot data
-```{r}
+```{r, fig.width=7, fig.height=5}
 require(ggplot2)
-df$COL <- ifelse(as.numeric(as.character(df$PERIOD)) <= 2004, 0, 19)
+##retain only future prediction
+df$PERIOD <-as.numeric(as.character(df$PERIOD))
+df <- df[which(df$PERIOD > max(df$PERIOD)-obj@nPred),]
 
 # Coverage  
-ggplot(df, aes(x=PERIOD, y=CVG, group=paste(TYPE, TEXT), color=paste(TYPE, TEXT))) + geom_line() + geom_point(shape=df$COL) + labs(color="Type", y="Coverage") + ggpubr::rotate_x_text()
+ggplot(df, aes(x=PERIOD, y=CVG*100, group=paste(TYPE, TEXT), color=paste(TYPE, TEXT))) + geom_line() + geom_point()+ labs(color="model", y="coverage [%]") + ggpubr::rotate_x_text() + scale_color_brewer(palette="Set1")
 
 # Precision
-ggplot(df, aes(x=PERIOD, y=log(SD), group=paste(TYPE, TEXT), color=paste(TYPE, TEXT))) + geom_line() + geom_point(shape=df$COL) + labs(color="Type", y="Coverage") + ggpubr::rotate_x_text()
+ggplot(df, aes(x=PERIOD, y=log(SD), group=paste(TYPE, TEXT), color=paste(TYPE, TEXT))) + geom_line() + geom_point() + labs(color="model", y="precision") + ggpubr::rotate_x_text()+ scale_color_brewer(palette="Set1")
 
 # Bias
-#negative values -> Overestimation
-ggplot(df, aes(x=PERIOD, y=BIAS, group=paste(TYPE, TEXT), color=paste(TYPE, TEXT))) + geom_line() + geom_point(shape=df$COL) + labs(color="Type", y="Coverage") + ggpubr::rotate_x_text()
+ggplot(df, aes(x=PERIOD, y=BIAS*100, group=paste(TYPE, TEXT), color=paste(TYPE, TEXT))) + geom_line() + geom_point() + labs(color="model", y="bias [%]") + ggpubr::rotate_x_text()+ scale_color_brewer(palette="Set1")
 ```
-
-## Calculate and plot scores
-
-Lowe scores correspond to better performance for all three analyzed metrics.
-```{r}
-#calcuate score 
-scr <- scaleAggMetr(bias=df$BIAS, sd=df$SD, cvg=df$CVG, plot=F)
-
-df$SCORE <- scr$VAL
-#Plot score
-ggplot(df, aes(x=PERIOD, y=SCORE, group=paste(TYPE, TEXT), color=paste(TYPE, TEXT))) + geom_line() + geom_point(shape=df$COL) + labs(color="Type", y="Score") + ggpubr::rotate_x_text()
-
-#HEatmap of adjusted metrics
-df$ADJ_CVG <- scr$MAT[,"CVG"]
-df$ADJ_SD <- scr$MAT[,"SD"]
-df$ADJ_BIAS <- scr$MAT[,"BIAS"]
-
-sub <- t(df[,which(grepl("ADJ_", colnames(df)))])
-colnames(sub) <- paste("RN", 1:length(sub[1,]))
-rownames(df) <- colnames(sub)
-pheatmap(sub, annotation_col=df[,c("TYPE", "TEXT", "PERIOD", "SCORE", "SD", "CVG", "BIAS")], show_colnames=F)
-```
-
-
-
-
-
-
-
-
-
-
-

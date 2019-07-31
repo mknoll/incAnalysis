@@ -4,13 +4,24 @@
 \alias{runFwProj}
 \title{Run forward projection}
 \usage{
-runFwProj(obj, ci = "W", text = "")
+runFwProj(obj, method = "jeffreys", text = "", constRates = T,
+  roundFun = identity)
 }
 \arguments{
-\item{ci}{Confidence Interval. Can be "W" for Wilson or 
-PC for Pearson-Clopper.}
+\item{obj}{incClass instance}
+
+\item{method}{which method to use, parameters used for DescTools::BinomCI,
+defaults to "jeffreys": "wald", "wilson", "agresti-coull", "jeffreys", 
+"modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", 
+"logit", "witting" or "pratt"}
 
 \item{text}{Freely usable additional textfield}
+
+\item{constRates}{if true, calculate constant rates, project last observations
+forward, otherwise}
+
+\item{roundFun}{if constRates=TRUE, how to process predicted counts. Defaults 
+to identity, can be e.g. floor or ceiling.}
 }
 \value{
 Updated incAnalysis object

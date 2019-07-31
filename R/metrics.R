@@ -3,11 +3,18 @@
 #' @description Calculates and aggregates bias, coverage
 #' and precision
 #' 
-#' @param obj incAnalysis object
+#' @param obj incClass instance
 #' 
+#' @import methods
 #' @export
+#'
 #' @return data.frame containing metrics
 metrics <- function(obj) {
+
+    if (is.null(obj) || !.hasSlot(obj, "evalLong")) {
+	warning("No data available!")
+	return(NULL)
+    }
 
     res <- list()
     for (dat in obj@evalLong) {

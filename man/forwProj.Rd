@@ -4,7 +4,8 @@
 \alias{forwProj}
 \title{Perform forward projection}
 \usage{
-forwProj(cases, n, ci, text)
+forwProj(cases, n, method, text, constRates, population,
+  roundFun = identity)
 }
 \arguments{
 \item{cases}{case counts (e.g. incidence) as stored in the 
@@ -12,9 +13,21 @@ casesWidePred slot of an incAnalysis object (period: rows; age: columns)}
 
 \item{n}{Row index of cases to fill prediction years with}
 
-\item{ci}{Confidence Interva, can be W for Wilson or PC for Pearson Clopper}
+\item{method}{which method to use, parameters used for DescTools::BinomCI,
+defaults to "jeffreys": "wald", "wilson", "agresti-coull", "jeffreys", 
+"modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", 
+"logit", "witting" or "pratt"}
 
 \item{text}{Freely usable text variable}
+
+\item{constRates}{calculate constant rates, use last observation of cases 
+otherwise}
+
+\item{population}{population counts in wide format (rows: years, cols: age),
+same structure as for cases}
+
+\item{roundFun}{function to apply to predictet cases (e.g. identity,
+floor, ceiling)}
 }
 \description{
 Forward projection of last observations

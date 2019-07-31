@@ -4,20 +4,16 @@
 \alias{runGAM}
 \title{Run GAM analysis}
 \usage{
-runGAM(obj, frm = as.formula(Y ~ offset(log(N))), family = "poisson",
-  text = "")
+runGAM(method = "inla", ...)
 }
 \arguments{
-\item{frm}{Model formula. Population (offset) N, observed data Y,
-age AGE and period (year) PERIOD}
+\item{method}{Can be inla for INLA fitted models,
+any other value for classical approaches}
 
-\item{family}{exponential family to use (e.g. poisson)}
-
-\item{text}{freely usable text variable}
-}
-\value{
-Update incAnalysis object.
+\item{...}{additional parameters}
 }
 \description{
+Run GAM analysis on incClass instance
+
 Models data using GAMs.
 }

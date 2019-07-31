@@ -8,19 +8,28 @@
 #' @param dir directory to create plots in
 #' @param fnPre prefix for plots
 #' 
-#' @import Hmisc
+#' @import DescTools
+#' @import grDevices
+#' @import graphics
 #' @export 
 #' 
 #' @return updated incAnalysis object 
 evaluate <- function(obj, dir=NULL, fnPre="") {
+    if (length(obj@results) == 0) {
+	warning("No results available (INLA might have crashed). Exiting.")
+	return()
+    }
+
     evalLong <- list()
     evalWide <- list()
     
     if (obj@predLast == 1 && !is.null(dir)) {
 	eFn <- gsub('[^a-zA-Z]', '', obj@entity)
 	eFn <- paste(eFn, obj@nPred, sep="_")
-	png(paste(dir, "/EVAL_",fnPre, "_", eFn, ".png", sep=""), res=250, width=3000, height=3000)
 	nH <- ceiling(sqrt(length(obj@results)))
+	if (nH == 0) { warning("Nothing to do!"); return() }
+
+	png(paste(dir, "/EVAL_",fnPre, "_", eFn, ".png", sep=""), res=250, width=3000, height=3000)
 	par(mfrow=c(nH, nH))
     }
 
@@ -29,7 +38,9 @@ evaluate <- function(obj, dir=NULL, fnPre="") {
 	print(res$type)
 
 	### Plot newly predicted years
-	if (res$type == "GLM") {
+	### FIXME: einheitliche bennennung!
+	if (res$type == "GLM_INLA" || res$type == "INLA" || res$type == "GAM_INLA") {
+	    #### INLA
 	    data <- obj@dataLong
 	    data$PRED <- res$result$summary.fitted.values[,"mean"]
 
@@ -81,30 +92,14 @@ evaluate <- function(obj, dir=NULL, fnPre="") {
 	    tmpN[which(is.na(tmpN))] <- 0
 
 	    ##############################
-	    if (res$ci == "W") {
-		####   Wilson Confidence Interval
-		#binconf(x=success, n=total)
-		cnf <- binconf(tmpPRED, tmpN, method="wilson")
-		data$LOW <- cnf[,2]*data$N
-		data$HIGH <- cnf[,3]*data$N
-	    } else if (res$ci == "PC") {
-		#####
-		#### Pearson Clopper
-		#binconf(x=success, n=total)
-		cnf <- binconf(tmpPRED, tmpN, method="exact")
-		data$LOW <- cnf[,2]*data$N
-		data$HIGH <- cnf[,3]*data$N
-	    } else {
-		warning("Not implemented!")
-	    }
-
-
+	    cnf <- BinomCI(tmpPRED, tmpN, method=res$method)
+	    data$LOW <- cnf[,2]*data$N
+	    data$HIGH <- cnf[,3]*data$N
 	    # TODO: SD
 	    p <- tmpPRED/tmpN
 	    ### calculate standard deviation
 	    data$SD <- sqrt(tmpPRED*p*(1-p))
-
-	} else if (res$type == "GAM") {
+	} else if (res$type == "GAM_ML") {
 	    data <- obj@dataLong
 	    ## family of gam
 	    fam <- res$fit$family
@@ -125,8 +120,30 @@ evaluate <- function(obj, dir=NULL, fnPre="") {
 	    #### 
 	    data$LOW <- data$Q025
 	    data$HIGH <- data$Q975
-	}
+	} else if (res$type == "GLM_ML") {
+	    data <- obj@dataLong
+	    ## family of glm
+	    fam <- res$fit$family
+	    link <- fam[[2]]
+	    
+	    pr <- res$result$PRD
+	    se <- res$result$SE
 
+	    #### TODO: check! / 95% CI
+	    lwr <- pr-1.96*se
+	    upr <- pr+1.96*se
+
+	    data$PRED <- transf(link, pr)
+	    data$Q025 <- transf(link, lwr)
+	    data$Q975 <- transf(link, upr)
+	    data$SD <- transf(link, se)
+	    
+	    #### 
+	    data$LOW <- data$Q025
+	    data$HIGH <- data$Q975
+	} else {
+	    stop("Unknown type!")
+	}
 
 	data$DIFF <- data$PRED-data$Y
 	### COVERAGE TODO

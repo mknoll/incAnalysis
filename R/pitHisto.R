@@ -17,6 +17,7 @@ pitHist <- function(obj, dir=NULL, fnPre="") {
 
     fn <-paste(dir, "/",  eFn, "_", fnPre, ".png", sep="")
     nH <- ceiling(sqrt(length(obj@results)))
+    if (nH == 0) { warning("Nothing to do!"); return() }
     png(fn, res=250, width=3000, height=3000)
     par(mfrow=c(nH, nH))
     for (res in obj@results) {
@@ -24,7 +25,7 @@ pitHist <- function(obj, dir=NULL, fnPre="") {
 	val <- NULL
 	eTx <- gsub('[^a-zA-Z]', '', res$text)
 
-	if (res$type == "GLM") {
+	if (res$type %in% c("INLA", "GLM", "GAM")) {
 	    val <- res$result$cpo$pit
 	    ## FIXME
 	} else if (res$type == "BAPC") {

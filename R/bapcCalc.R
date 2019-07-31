@@ -1,5 +1,13 @@
 #' @title BAPC calc
+#' 
+#' @description perform a standard BAPC analysis 
+#' 
 #' @param gf grid factor: age groups are m times wider than the period interval
+#' @param cases Incidence counts
+#' @param population Population data
+#' @param predict precict parameter of BAPC
+#' @param text Free text 
+#' 
 #' @import BAPC
 #' @export 
 bapcCalc <- function(population, cases, gf, 
@@ -16,6 +24,12 @@ bapcCalc <- function(population, cases, gf,
 }
 
 #' @title Run BAPC analysis
+#' 
+#' @description Perform BAPC projection on inClass object 
+#' 
+#' @param obj incClass object
+#' @param text free text variable 
+#'
 #' @import BAPC
 #' @export
 runBAPC <- function(obj, text="") {

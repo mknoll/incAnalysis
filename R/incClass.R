@@ -34,6 +34,7 @@ incClass <- setClass("incClass",
 #'
 #' @description Constructor for new analysis object
 #'
+#' @param .Object class instance
 #' @param dateCreated Date of creation
 #' @param population data.frame containing count data with years in
 #' rows (first row: earliest year) and numeric ages in cols (increasing from 
@@ -52,6 +53,7 @@ incClass <- setClass("incClass",
 #' in yearly fashion and 1-year age groups, the grid factor is 1. For yearly data 
 #' and 5-year age groups, the grid factor is 5. 
 #' @param entity Free text variable.
+#' @param ... additional parameters
 setMethod("initialize", "incClass",
 	  function(.Object,
 		   dateCreated=POSIXct,

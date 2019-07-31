@@ -5,12 +5,16 @@
 \title{Run INLA analysis}
 \usage{
 runInla(obj, frm = as.formula(Y ~ offset(log(N))), family = "poisson",
-  control.family = list(link = "log"), control.predictor = list(link = 1,
-  compute = T), control.compute = list(dic = T, cpo = T, waic = T),
-  text = "")
+  control.family = list(link = "log"), control.predictor = list(link =
+  1, compute = T), control.compute = list(dic = T, cpo = T, waic = T),
+  text = "", class = "INLA")
 }
 \arguments{
+\item{obj}{incClass instance}
+
 \item{frm}{Model formula.}
+
+\item{family}{Distribution}
 
 \item{control.family}{inla parameter}
 
@@ -20,12 +24,15 @@ runInla(obj, frm = as.formula(Y ~ offset(log(N))), family = "poisson",
 
 \item{text}{Free text variable}
 
-\item{data}{data in long format as stored in the dataLongPred 
-slot of an incAnalysis object}
+\item{class}{Additional specification of the model class,
+is set to GLM when runINLA is called from from runGLM and 
+GAM is called from runGAM. Defaults to INLA.}
+
+\item{...}{additional parameters}
 }
 \value{
 Updated incAnalysis object
 }
 \description{
-Add INLA based model analysis to an incAnalysi sobject
+Add INLA based model analysis to an incAnalysis object
 }

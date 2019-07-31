@@ -6,3 +6,11 @@
 \usage{
 runBAPC(obj, text = "")
 }
+\arguments{
+\item{obj}{incClass object}
+
+\item{text}{free text variable}
+}
+\description{
+Perform BAPC projection on inClass object
+}

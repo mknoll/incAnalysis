@@ -90,7 +90,7 @@ setMethod("initialize", "incClass",
 		  .Object@pred=rownames(cases)[to]
 	      }
 
-	      .Object@casesWide=tmp$FULL_CASES_WIDE #TODO
+	      .Object@casesWide=tmp$FULL_CASES_WIDE
 	      .Object@casesWidePred=tmp$PRED_CASES_WIDE
 	      .Object@populationWide=tmp$FULL_POPULATION_WIDE
 

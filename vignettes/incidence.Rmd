@@ -236,7 +236,7 @@ obj <- runGAM(obj, frm=frm, family="nb", text="te", method="ml")
 ### INLA
 # marginal bases for age and period
 ag <- splines2::mSpline(obj@dataLongPred$AGE)
-yr <- splines2::mSpline(obj@dataLongPred$AGE)
+yr <- splines2::mSpline(obj@dataLongPred$PERIOD)
   
 # tensor product smooth model matrix
 Z <- mgcv::tensor.prod.model.matrix(list(ag, yr))

@@ -39,7 +39,7 @@ runBAPC <- function(obj, text="") {
 		    obj@casesWidePred,
 		    obj@gridFactor,
 		    predict=list(npredict=obj@nPred, retro=T),
-		    text=text) ##TODO: check if yrs/ cat
+		    text=text) 
 
     obj@results[[length(obj@results)+1]] <- res
 

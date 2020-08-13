@@ -38,7 +38,6 @@ evaluate <- function(obj, dir=NULL, fnPre="") {
 	print(res$type)
 
 	### Plot newly predicted years
-	### FIXME: einheitliche bennennung!
 	if (res$type == "GLM_INLA" || res$type == "INLA" || res$type == "GAM_INLA") {
 	    #### INLA
 	    data <- obj@dataLong
@@ -95,7 +94,6 @@ evaluate <- function(obj, dir=NULL, fnPre="") {
 	    cnf <- BinomCI(tmpPRED, tmpN, method=res$method)
 	    data$LOW <- cnf[,2]*data$N
 	    data$HIGH <- cnf[,3]*data$N
-	    # TODO: SD
 	    p <- tmpPRED/tmpN
 	    ### calculate standard deviation
 	    data$SD <- sqrt(tmpPRED*p*(1-p))
@@ -108,7 +106,7 @@ evaluate <- function(obj, dir=NULL, fnPre="") {
 	    pr <- res$result$PRD
 	    se <- res$result$SE
 
-	    #### TODO: check! / 95% CI
+	    ####  95% CI
 	    lwr <- pr-1.96*se
 	    upr <- pr+1.96*se
 
@@ -129,7 +127,7 @@ evaluate <- function(obj, dir=NULL, fnPre="") {
 	    pr <- res$result$PRD
 	    se <- res$result$SE
 
-	    #### TODO: check! / 95% CI
+	    ####  95% CI
 	    lwr <- pr-1.96*se
 	    upr <- pr+1.96*se
 
@@ -146,14 +144,13 @@ evaluate <- function(obj, dir=NULL, fnPre="") {
 	}
 
 	data$DIFF <- data$PRED-data$Y
-	### COVERAGE TODO
+	### COVERAGE 
 	o1 <- ifelse(data$Y < data$LOW , 1, 0)
 	o2 <- ifelse(data$Y > data$HIGH , 1, 0)
 	data$OUTSIDE <- o1+o2
 	### BIAS
 	data$MEAN <- data$PRED
 
-	### TODO: check for age ranges
 	data$AGE <- as.numeric(as.character(data$AGE))
 	data$TYPE <- res$type
 	data$TEXT <- res$text

@@ -22,23 +22,23 @@ scaleAggMetr <- function(bias, sd, cvg, wBIAS=1, wSD=1, wCVG=1, plot=T) {
     ### BIAS
     bak <- bias
     bias <- log(abs(bias))
-    w <- which(is.infinite(bias)) 
+    w <- which(is.infinite(bias))  
     if (plot) {
 	hist(bias, main="BIAS")
     }
     #bias <- abs(bias)
     if (length(w) > 0) {
-	bias <- (bias-mean(bias[-w], na.rm=T))/sd(bias[-w], na.rm=T) ###TODO: na.rm
+	bias <- (bias-mean(bias[-w], na.rm=T))/sd(bias[-w], na.rm=T) 
     } else {
-	bias <- (bias-mean(bias[], na.rm=T))/sd(bias[], na.rm=T) ###TODO: na.rm
+	bias <- (bias-mean(bias[], na.rm=T))/sd(bias[], na.rm=T)
     }
     mn <- min(bias[which(!is.infinite((bias)))], na.rm=T)
     bias <- bias+mn*-1
     bias <- bias^8
-    if (length(w) > 0) { #TODO: add for sd , cvg
-	bias <- (bias-mean(bias[-w], na.rm=T))/sd(bias[-w], na.rm=T) ###TODO: na.rm
+    if (length(w) > 0) { 
+	bias <- (bias-mean(bias[-w], na.rm=T))/sd(bias[-w], na.rm=T) 
     } else {
-	bias <- (bias-mean(bias[], na.rm=T))/sd(bias[], na.rm=T) ###TODO: na.rm
+	bias <- (bias-mean(bias[], na.rm=T))/sd(bias[], na.rm=T) 
     }
     mn <- min(bias[which(!is.infinite((bias)))], na.rm=T)
     bias <- bias+mn*-1
@@ -78,11 +78,10 @@ scaleAggMetr <- function(bias, sd, cvg, wBIAS=1, wSD=1, wCVG=1, plot=T) {
 
     #### SD
     bak <- sd
-    w <- which(sd == 0) ### FIXME!
-    ## TODO: chekc for inf
+    w <- which(sd == 0 | is.infinite(sd))
     sd <- log(sd)
     if (length(w) > 0) {
-
+	warning(paste("sd was 0 or infinite in", length(w), "cases!"))
 	sd <- (sd - mean(sd[-w], na.rm=T))/sd(sd[-w], na.rm=T)
     } else {
 	sd <- (sd - mean(sd[], na.rm=T))/sd(sd[], na.rm=T)

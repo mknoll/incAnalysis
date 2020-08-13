@@ -24,15 +24,18 @@ metrics <- function(obj) {
 	} 
 	for (period in levels(factor(dat$PERIOD))) {
 	    data <- dat[which(dat$PERIOD == period),]
-	    ##TODO: NA treatment?
+	    ## check for NA
 	    w <- which(!(is.na(data$Y) | is.na(data$PRED)))
+	    if (length(w) > 0) {
+		warning("NAs were detected in observed or predicted data!")
+	    }
 	    ## pred and observed = 0
 	    nZero <- length(which(data$Y == 0 & data$PRED == 0))
 	    bias <- (data$Y[w]-data$PRED[w])/data$Y[w]
 	    if (length(which(is.infinite(bias))) > 0) {
-		bias <- mean(c(bias[which(!is.infinite(bias))], rep(0, nZero)), na.rm=T) ### TODO
+		bias <- mean(c(bias[which(!is.infinite(bias))], rep(0, nZero)), na.rm=T) 
 	    } else {
-		bias <- mean(c(bias, rep(0, nZero)), na.rm=T) ### TODO
+		bias <- mean(c(bias, rep(0, nZero)), na.rm=T) 
 	    }
 	    res[[length(res)+1]] <- data.frame(SD=mean(data$SD[w], na.rm=T),
 					       CVG=1-sum(data$OUTSIDE[w], na.rm=T)/length(data[w,1]),

@@ -17,7 +17,9 @@ pitHist <- function(obj, dir=NULL, fnPre="") {
 
     fn <-paste(dir, "/",  eFn, "_", fnPre, ".png", sep="")
     nH <- ceiling(sqrt(length(obj@results)))
+
     if (nH == 0) { warning("Nothing to do!"); return() }
+
     png(fn, res=250, width=3000, height=3000)
     par(mfrow=c(nH, nH))
     for (res in obj@results) {
@@ -25,9 +27,8 @@ pitHist <- function(obj, dir=NULL, fnPre="") {
 	val <- NULL
 	eTx <- gsub('[^a-zA-Z]', '', res$text)
 
-	if (res$type %in% c("INLA", "GLM", "GAM")) {
+	if (res$type %in% c("GLM_INLA", "GAM_INLA")) {
 	    val <- res$result$cpo$pit
-	    ## FIXME
 	} else if (res$type == "BAPC") {
 	    val <- res$bapc@inlares[[1]]$cpo$pit
 	} else {
@@ -40,10 +41,10 @@ pitHist <- function(obj, dir=NULL, fnPre="") {
     }
     dev.off()
     
-    #FIXME!
-    while(!.Devices[[1]][1] == "null device") {
-	dev.off()
-    }
+    
+    #while(!.Devices[[1]][1] == "null device") {
+    #	dev.off()
+    #}
 }
 
 

@@ -12,7 +12,6 @@
 #'
 #' @export 
 createZSpline <- function(val, a=NULL, b=NULL, nKnots=NULL) {
-    ## TODO
     nKnots <- ifelse(is.null(nKnots), 15, nKnots)
     if (is.null(a) || is.null(b)) {
 	a <- range(val)[1]

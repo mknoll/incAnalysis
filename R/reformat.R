@@ -1,4 +1,4 @@
-#' @title Reformats data 
+
 #'
 #' @description Assures that case and population matrices match,
 #' creates long format data from supplied wide format data,
@@ -16,8 +16,6 @@
 #' @export 
 #' @return list with adjusted long and wide format data
 reformat <- function(cases, population, pred=2, fit=15) {
-    ## TODO: check class + dimensions + allowed values
-
     ## same yearly structure? (rows)
     population <- population[which(rownames(population) %in% rownames(cases)),]
     cases <- cases[which(rownames(cases) %in% rownames(population)),]
@@ -39,8 +37,6 @@ reformat <- function(cases, population, pred=2, fit=15) {
 					 Y=cases[,i])
     }
     df <- do.call(rbind, df)
-    #df$COHORT <- df$PERIOD-df$AGE: TODO: > 1 Jahres abeschnitte
-    #TODO: Convert to numeric?
     df$AGE <- as.numeric(as.character(df$AGE))
     df$PERIOD <- as.numeric(as.character(df$PERIOD))
 
